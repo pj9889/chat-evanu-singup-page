@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Dating Gateway | Member Connection</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b0f19; color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .card { background: #111827; max-width: 450px; width: 100%; border-radius: 16px; padding: 30px; text-align: center; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        
+        /* ইমেজের সাধারণ স্টাইল */
+        .site-logo { max-width: 150px; height: auto; margin-bottom: 25px; border-radius: 8px; }
+        .content-pic { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 25px; border: 1px solid #374151; }
+        
+        /* গোল প্রোফাইল ইমেজের স্টাইল */
+        .profile-container { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
+        .profile-pic { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #ec4899; }
+        .active-status { position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; background-color: #22c55e; border-radius: 50%; border: 3px solid #111827; }
+        
+        /* টেক্সট ও কালার স্টাইল */
+        p { font-size: 17px; line-height: 1.6; color: #d1d5db; margin-bottom: 30px; text-align: center; }
+        .highlight-red { color: #f43f5e; font-weight: bold; }
+        .highlight-blue { color: #38bdf8; font-weight: bold; }
+        .profile-name { font-size: 22px; font-weight: bold; color: #ffffff; margin-bottom: 15px; }
+        
+        /* বাটন স্টাইল */
+        .btn { display: inline-block; width: 100%; background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, opacity 0.2s; text-decoration: none; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+        
+        /* বাফারিং লোডার */
+        .loader-container { display: none; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #1f2937; border-top: 5px solid #ec4899; border-radius: 50%; margin: 20px auto; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* স্টেপস কন্ট্রোল */
+        .step { display: none; }
+        .step.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        
+        <div id="step1" class="step active">
+            <img src="logo.webp" alt="Website Logo" class="site-logo">
+            <img src="pic1.webp" alt="Dating Preview" class="content-pic">
+            <p><span class="highlight-red">Jacklyn</span> is a verified <span class="highlight-blue">Chat-Avenue</span> member and she provides free video call sex. Currently, Jacklyn is available for video call sex right now! Do you want to start a video call sex with her?</p>
+            <button class="btn" onclick="nextStep(2)">NEXT</button>
+        </div>
+
+        <div id="step2" class="step">
+            <img src="logo.webp" alt="Website Logo" class="site-logo">
+            <img src="pic2.webp" alt="Safety Warning" class="content-pic">
+            <p>None of our members charge money for video sex. Please refrain from any financial transactions or transferring money.</p>
+            <button class="btn" onclick="nextStep(3)">NEXT</button>
+        </div>
+
+        <div id="step3" class="step">
+            <img src="logo.webp" alt="Website Logo" class="site-logo">
+            <img src="pic3.webp" alt="Connecting" class="content-pic">
+            <p>Connecting you to a private messaging session with Jacklyn. Please maintain decency and enjoy a safe video sex experience with Jacklyn.</p>
+            <button class="btn" onclick="startLoading()">CONNECT WITH JACKLYN</button>
+        </div>
+
+        <div id="loader" class="loader-container">
+            <div class="spinner"></div>
+            <p>Connecting to secure server...</p>
+        </div>
+
+        <div id="step4" class="step">
+            <div class="profile-container">
+                <img src="jacklyn.webp" alt="Jacklyn Profile" class="profile-pic">
+                <div class="active-status"></div>
+            </div>
+            <div class="profile-name">Jacklyn</div>
+            <p>If you want to start private messaging with Jacklyn, please complete your free profile registration below.</p>
+            <a href="https://your-affiliate-link-here.com" class="btn" target="_blank">COMPLETE PROFILE</a>
+        </div>
+
+    </div>
+
+    <script>
+        function nextStep(stepNumber) {
+            // সব স্টেপ হাইড করা হচ্ছে
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            // নির্দিষ্ট স্টেপ শো করা হচ্ছে
+            document.getElementById('step' + stepNumber).classList.add('active');
+        }
+
+        function startLoading() {
+            // স্টেপ ৩ হাইড করা হচ্ছে
+            document.getElementById('step3').classList.remove('active');
+            // লোডার চালু করা হচ্ছে
+            document.getElementById('loader').style.display = 'block';
+
+            // ঠিক ২ সেকেন্ড (২০০০ মিলিসেকেন্ড) পর লোডার বন্ধ করে ফাইনাল টেমপ্লেট ওপেন হবে
+            setTimeout(function() {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('step4').classList.add('active');
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
