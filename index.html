@@ -25,11 +25,11 @@
         .highlight-blue { color: #38bdf8; font-weight: bold; }
         .profile-name { font-size: 22px; font-weight: bold; color: #ffffff; margin-bottom: 15px; }
         
-        /* সাধারণ বাটন স্টাইল (স্টেপ ১, ২, ৩ এর জন্য) */
+        /* সাধারণ বাটন স্টাইল */
         .btn { display: inline-block; width: 100%; background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, opacity 0.2s; text-decoration: none; }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
         
-        /* বিশেষ আকর্ষণীয় বাটন (Unlock Match - শেষ ধাপের জন্য) */
+        /* আকর্ষণীয় ও অ্যানিমেটেড বাটন (Unlock Match) */
         .btn-animated {
             display: inline-block;
             width: 100%;
@@ -113,67 +113,13 @@
                 <div class="active-status"></div>
             </div>
             <div class="profile-name">Jacklyn</div>
-            <p>If you want to start private messaging-Phone Sex with Jacklyn, Match And Fuck Now.</p>
-            <a href="#" id="affiliate-btn" class="btn-animated" target="_blank">Unlock Match</a>
+            <p>If you want to start private messaging-Phone Sex with Jacklyn,Free Match Now.</p>
+            <a href="https://paysale.g2afse.com/click?pid=125904&offer_id=10417" class="btn-animated" target="_blank">Unlock Match</a>
         </div>
 
     </div>
 
     <script>
-        // আপনার কান্ট্রি-ভিত্তিক স্মার্ট অফার লিংক ডাটাবেজ
-        const offerLinks = {
-            // নতুন লিংক: US, UK (GB), Australia (AU), Ireland (IE), Canada (CA) এর জন্য
-            "US": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
-            "GB": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
-            "AU": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
-            "IE": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
-            "CA": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
-
-            // বাকি অন্য সব দেশের লিংক আগের মতোই অক্ষুণ্ণ রাখা হয়েছে
-            "BE": "https://dghhgdb.aipostsm.com/c/c3d9764be3326?track=be/fr", // Belgium
-            "FR": "https://dghhgdb.aipostsm.com/c/c3d9764be3326?track=be/fr", // France
-            
-            "CH": "https://dghhgdb.smstatts.com/c/15a9cddc1eed0?track=CH/DE/AT", // Switzerland
-            "DE": "https://dghhgdb.smstatts.com/c/15a9cddc1eed0?track=CH/DE/AT", // Germany
-            "AT": "https://dghhgdb.smstatts.com/c/15a9cddc1eed0?track=CH/DE/AT", // Austria
-            
-            "NO": "https://dghhgdb.aipostsm.com/c/bd3f38909c845?track=NO/DK/FI/SE", // Norway
-            "DK": "https://dghhgdb.aipostsm.com/c/bd3f38909c845?track=NO/DK/FI/SE", // Denmark
-            "FI": "https://dghhgdb.aipostsm.com/c/bd3f38909c845?track=NO/DK/FI/SE", // Finland
-            "SE": "https://dghhgdb.aipostsm.com/c/bd3f38909c845?track=NO/DK/FI/SE", // Sweden
-            
-            "IT": "https://dghhgdb.aipostsm.com/c/f171f42589fdd?track=it", // Italy
-            "NZ": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk"  // New Zealand (আগের গ্রুপ থেকে অবশিষ্টাংশ)
-        };
-
-        // কান্ট্রি লিস্টে না থাকলে অথবা ট্র্যাকিং ফেইল করলে ডিফল্ট ব্যাকআপ লিংক
-        const defaultLink = "https://dghhgdb.trackhup.com/s/4eab6e8c9bf26?subsource=all";
-        
-        let targetLink = defaultLink;
-
-        // ইউজারের আইপি থেকে দেশ খোঁজার ফাংশন
-        async function checkUserCountry() {
-            try {
-                const response = await fetch('https://ipapi.co/json/');
-                if (response.ok) {
-                    const data = await response.json();
-                    const countryCode = data.country_code; // কান্ট্রি কোড যেমন: US, GB, FR ইত্যাদি
-
-                    if (offerLinks[countryCode]) {
-                        targetLink = offerLinks[countryCode];
-                    }
-                }
-            } catch (error) {
-                // কোনো কারণে সমস্যা হলে ডিফল্ট লিংক কাজ করবে, ট্রাফিক লস হবে না
-                targetLink = defaultLink;
-            }
-        }
-
-        // পেজ লোড হওয়ার সাথে সাথে ব্যাকগ্রাউন্ডে কান্ট্রি চেকিং শুরু হবে
-        window.onload = function() {
-            checkUserCountry();
-        };
-
         function nextStep(stepNumber) {
             document.querySelectorAll('.step').forEach(step => {
                 step.classList.remove('active');
@@ -185,14 +131,9 @@
             document.getElementById('step3').classList.remove('active');
             document.getElementById('loader').style.display = 'block';
 
-            // ঠিক ২ সেকেন্ড পর বাফারিং শেষ হবে
+            // ঠিক ২ সেকেন্ড পর বাফারিং শেষ হয়ে শেষ ধাপ আসবে
             setTimeout(function() {
                 document.getElementById('loader').style.display = 'none';
-                
-                // শেষ ধাপের বাটনে সঠিক স্মার্ট লিংকটি পুশ করা হচ্ছে
-                const finalBtn = document.getElementById('affiliate-btn');
-                finalBtn.setAttribute('href', targetLink);
-                
                 document.getElementById('step4').classList.add('active');
             }, 2000);
         }
