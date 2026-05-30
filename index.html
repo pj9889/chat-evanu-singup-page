@@ -25,9 +25,47 @@
         .highlight-blue { color: #38bdf8; font-weight: bold; }
         .profile-name { font-size: 22px; font-weight: bold; color: #ffffff; margin-bottom: 15px; }
         
-        /* বাটন স্টাইল */
+        /* সাধারণ বাটন স্টাইল (স্টেপ ১, ২, ৩ এর জন্য) */
         .btn { display: inline-block; width: 100%; background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, opacity 0.2s; text-decoration: none; }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+        
+        /* বিশেষ আকর্ষণীয় বাটন (Unlock Match - শেষ ধাপের জন্য) */
+        .btn-animated {
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(135deg, #ff007f 0%, #ff4500 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+            animation: pulseEffect 1.5s infinite alternate, wobbleEffect 2.5s infinite ease-in-out;
+        }
+        .btn-animated:hover {
+            background: linear-gradient(135deg, #ff4500 0%, #ff007f 100%);
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.9);
+        }
+
+        /* পালস (Pulse/Glow) অ্যানিমেশন */
+        @keyframes pulseEffect {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 0, 127, 0.5); }
+            100% { transform: scale(1.03); box-shadow: 0 0 25px rgba(255, 0, 127, 0.8), 0 0 10px rgba(255, 69, 0, 0.4); }
+        }
+
+        /* হালকা নড়াচড়া (Wobble) অ্যানিমেশন */
+        @keyframes wobbleEffect {
+            0% { transform: rotate(0deg); }
+            15% { transform: rotate(-1deg); }
+            30% { transform: rotate(1deg); }
+            45% { transform: rotate(-1deg); }
+            60% { transform: rotate(1deg); }
+            75% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
         
         /* বাফারিং লোডার */
         .loader-container { display: none; }
@@ -43,7 +81,6 @@
 
     <div class="card">
         
-        <!-- STEP 1 -->
         <div id="step1" class="step active">
             <img src="logo.webp" alt="Website Logo" class="site-logo">
             <img src="pic1.webp" alt="Dating Preview" class="content-pic">
@@ -51,7 +88,6 @@
             <button class="btn" onclick="nextStep(2)">NEXT</button>
         </div>
 
-        <!-- STEP 2 -->
         <div id="step2" class="step">
             <img src="logo.webp" alt="Website Logo" class="site-logo">
             <img src="pic2.webp" alt="Safety Warning" class="content-pic">
@@ -59,7 +95,6 @@
             <button class="btn" onclick="nextStep(3)">NEXT</button>
         </div>
 
-        <!-- STEP 3 -->
         <div id="step3" class="step">
             <img src="logo.webp" alt="Website Logo" class="site-logo">
             <img src="pic3.webp" alt="Connecting" class="content-pic">
@@ -67,13 +102,11 @@
             <button class="btn" onclick="startLoading()">CONNECT WITH JACKLYN</button>
         </div>
 
-        <!-- BUFFERING LOADER -->
         <div id="loader" class="loader-container">
             <div class="spinner"></div>
             <p>Connecting to secure server...</p>
         </div>
 
-        <!-- FINAL STEP (TEMPLATE 4) -->
         <div id="step4" class="step">
             <div class="profile-container">
                 <img src="jacklyn.webp" alt="Jacklyn Profile" class="profile-pic">
@@ -81,8 +114,7 @@
             </div>
             <div class="profile-name">Jacklyn</div>
             <p>If you want to start private messaging with Jacklyn, please complete your free profile registration below.</p>
-            <!-- এখানে id="affiliate-btn" যোগ করা হয়েছে ডায়নামিক লিংকের জন্য -->
-            <a href="#" id="affiliate-btn" class="btn" target="_blank">COMPLETE PROFILE</a>
+            <a href="#" id="affiliate-btn" class="btn-animated" target="_blank">Unlock Match</a>
         </div>
 
     </div>
@@ -90,6 +122,14 @@
     <script>
         // আপনার কান্ট্রি-ভিত্তিক স্মার্ট অফার লিংক ডাটাবেজ
         const offerLinks = {
+            // নতুন লিংক: US, UK (GB), Australia (AU), Ireland (IE), Canada (CA) এর জন্য
+            "US": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
+            "GB": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
+            "AU": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
+            "IE": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
+            "CA": "https://paysale.g2afse.com/click?pid=125904&offer_id=10417",
+
+            // বাকি অন্য সব দেশের লিংক আগের মতোই অক্ষুণ্ণ রাখা হয়েছে
             "BE": "https://dghhgdb.aipostsm.com/c/c3d9764be3326?track=be/fr", // Belgium
             "FR": "https://dghhgdb.aipostsm.com/c/c3d9764be3326?track=be/fr", // France
             
@@ -103,19 +143,13 @@
             "SE": "https://dghhgdb.aipostsm.com/c/bd3f38909c845?track=NO/DK/FI/SE", // Sweden
             
             "IT": "https://dghhgdb.aipostsm.com/c/f171f42589fdd?track=it", // Italy
-            
-            "IE": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk", // Ireland
-            "NZ": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk", // New Zealand
-            "CA": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk", // Canada
-            "AU": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk", // Australia
-            "US": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk", // USA
-            "GB": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk"  // UK
+            "NZ": "https://dghhgdb.smstatts.com/c/48eab3708cfdd?track=ie/nz/ca/au/us/uk"  // New Zealand (আগের গ্রুপ থেকে অবশিষ্টাংশ)
         };
 
-        // কান্ট্রি লিস্টে না থাকলে অথবা কোনো কারণে ট্র্যাক না হলে এই ডিফল্ট লিংকটি কাজ করবে
+        // কান্ট্রি লিস্টে না থাকলে অথবা ট্র্যাকিং ফেইল করলে ডিফল্ট ব্যাকআপ লিংক
         const defaultLink = "https://dghhgdb.trackhup.com/s/4eab6e8c9bf26?subsource=all";
         
-        let targetLink = defaultLink; // শুরুতে ডিফল্ট লিংক ব্যাকআপ হিসেবে থাকবে
+        let targetLink = defaultLink;
 
         // ইউজারের আইপি থেকে দেশ খোঁজার ফাংশন
         async function checkUserCountry() {
@@ -123,14 +157,14 @@
                 const response = await fetch('https://ipapi.co/json/');
                 if (response.ok) {
                     const data = await response.json();
-                    const countryCode = data.country_code; // কান্ট্রি কোড যেমন: US, FR, IT ইত্যাদি
+                    const countryCode = data.country_code; // কান্ট্রি কোড যেমন: US, GB, FR ইত্যাদি
 
                     if (offerLinks[countryCode]) {
                         targetLink = offerLinks[countryCode];
                     }
                 }
             } catch (error) {
-                // নেটওয়ার্ক এরর বা অ্যাডব্লকার থাকলে ডিফল্ট লিংকই বহাল থাকবে, লস হবে না
+                // কোনো কারণে সমস্যা হলে ডিফল্ট লিংক কাজ করবে, ট্রাফিক লস হবে না
                 targetLink = defaultLink;
             }
         }
@@ -155,7 +189,7 @@
             setTimeout(function() {
                 document.getElementById('loader').style.display = 'none';
                 
-                // শেষ ধাপের বাটনে ট্র্যাক করা লিংকটি পুশ করা হচ্ছে
+                // শেষ ধাপের বাটনে সঠিক স্মার্ট লিংকটি পুশ করা হচ্ছে
                 const finalBtn = document.getElementById('affiliate-btn');
                 finalBtn.setAttribute('href', targetLink);
                 
