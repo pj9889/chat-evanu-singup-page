@@ -12,9 +12,13 @@
         
         /* ইমেজের সাধারণ স্টাইল */
         .site-logo { max-width: 150px; height: auto; margin-bottom: 25px; border-radius: 8px; }
-        .content-pic { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 25px; border: 1px solid #374151; }
         
-        /* গোল প্রোফাইল ইমেজের স্টাইল */
+        /* স্লাইডার কন্টেইনার এবং ইমেজের স্টাইল */
+        .slider-container { width: 100%; height: 250px; position: relative; margin-bottom: 25px; overflow: hidden; border-radius: 12px; border: 1px solid #374151; }
+        .slider-pic { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.5s ease-in-out; }
+        .slider-pic.active-img { opacity: 1; position: relative; }
+        
+        /* গোল প্রোфাইল ইমেজের স্টাইল */
         .profile-container { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #ec4899; }
         .active-status { position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; background-color: #22c55e; border-radius: 50%; border: 3px solid #111827; }
@@ -83,22 +87,14 @@
         
         <div id="step1" class="step active">
             <img src="logo.webp" alt="Website Logo" class="site-logo">
-            <img src="pic1.webp" alt="Dating Preview" class="content-pic">
+            
+            <div class="slider-container">
+                <img src="pic1.webp" alt="Dating Preview 1" class="slider-pic active-img">
+                <img src="pic2.webp" alt="Dating Preview 2" class="slider-pic">
+                <img src="pic3.webp" alt="Dating Preview 3" class="slider-pic">
+            </div>
+
             <p><span class="highlight-red">Jacklyn</span> is a verified <span class="highlight-blue">Chat-Avenue</span> member and she provides free video call sex. Currently, Jacklyn is available for video call sex right now! Do you want to start a video call sex with her?</p>
-            <button class="btn" onclick="nextStep(2)">NEXT</button>
-        </div>
-
-        <div id="step2" class="step">
-            <img src="logo.webp" alt="Website Logo" class="site-logo">
-            <img src="pic2.webp" alt="Safety Warning" class="content-pic">
-            <p>None of our members charge money for video sex. Please refrain from any financial transactions or transferring money.</p>
-            <button class="btn" onclick="nextStep(3)">NEXT</button>
-        </div>
-
-        <div id="step3" class="step">
-            <img src="logo.webp" alt="Website Logo" class="site-logo">
-            <img src="pic3.webp" alt="Connecting" class="content-pic">
-            <p>Connecting you to a private messaging session with Jacklyn. Please maintain decency and enjoy a safe video sex experience with Jacklyn.</p>
             <button class="btn" onclick="startLoading()">CONNECT WITH JACKLYN</button>
         </div>
 
@@ -113,25 +109,41 @@
                 <div class="active-status"></div>
             </div>
             <div class="profile-name">Jacklyn</div>
-            <p>If you want to start private messaging-Phone Sex with Jacklyn,Free Match Now.</p>
+            <p>If you want to start private messaging with Jacklyn, please complete your free profile registration below.</p>
             <a href="https://paysale.g2afse.com/click?pid=125904&offer_id=10417" class="btn-animated" target="_blank">Unlock Match</a>
         </div>
 
     </div>
 
     <script>
-        function nextStep(stepNumber) {
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active');
-            });
-            document.getElementById('step' + stepNumber).classList.add('active');
+        // ২ সেকেন্ড পর পর ইমেজ অটোমেটিক স্লাইড করার জাভাস্ক্রিপ্ট কোড
+        let currentImgIndex = 0;
+        const images = document.querySelectorAll('.slider-pic');
+        const totalImages = images.length;
+
+        function autoSlider() {
+            // বর্তমানের একটিভ ইমেজ থেকে ক্লাস রিমুভ করা
+            images[currentImgIndex].classList.remove('active-img');
+            
+            // ইনডেক্স পরিবর্তন করে পরের ইমেজে যাওয়া
+            currentImgIndex = (currentImgIndex + 1) % totalImages;
+            
+            // নতুন ইমেজে একটিভ ক্লাস যোগ করা
+            images[currentImgIndex].classList.add('active-img');
         }
 
+        // প্রতি ২০০০ মিলিসেকেন্ড (২ সেকেন্ড) পর পর autoSlider ফাংশন রান হবে
+        setInterval(autoSlider, 2000);
+
+
+        // লোডিং বাফারিং হ্যান্ডেল করার ফাংশন
         function startLoading() {
-            document.getElementById('step3').classList.remove('active');
+            // প্রথম স্টেপ হাইড করা
+            document.getElementById('step1').classList.remove('active');
+            // বাফারিং লোডার চালু করা
             document.getElementById('loader').style.display = 'block';
 
-            // ঠিক ২ সেকেন্ড পর বাফারিং শেষ হয়ে শেষ ধাপ আসবে
+            // ঠিক ২ সেকেন্ড পর বাফারিং শেষ হয়ে ফাইনাল পেজ ওপেন হবে
             setTimeout(function() {
                 document.getElementById('loader').style.display = 'none';
                 document.getElementById('step4').classList.add('active');
