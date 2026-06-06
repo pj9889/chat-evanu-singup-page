@@ -3,153 +3,490 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Dating Gateway | Member Connection</title>
+    <title>Chat-Avenue For Meetup</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0b0f19; color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
-        .card { background: #111827; max-width: 450px; width: 100%; border-radius: 16px; padding: 30px; text-align: center; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        
-        /* ইমেজের সাধারণ স্টাইল */
-        .site-logo { max-width: 150px; height: auto; margin-bottom: 25px; border-radius: 8px; }
-        
-        /* স্লাইডার কন্টেইনার এবং ইমেজের স্টাইল */
-        .slider-container { width: 100%; height: 250px; position: relative; margin-bottom: 25px; overflow: hidden; border-radius: 12px; border: 1px solid #374151; }
-        .slider-pic { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.5s ease-in-out; }
-        .slider-pic.active-img { opacity: 1; position: relative; }
-        
-        /* গোল প্রোфাইল ইমেজের স্টাইল */
-        .profile-container { position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto; }
-        .profile-pic { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid #ec4899; }
-        .active-status { position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; background-color: #22c55e; border-radius: 50%; border: 3px solid #111827; }
-        
-        /* টেক্সট ও কালার স্টাইল */
-        p { font-size: 17px; line-height: 1.6; color: #d1d5db; margin-bottom: 30px; text-align: center; }
-        .highlight-red { color: #f43f5e; font-weight: bold; }
-        .highlight-blue { color: #38bdf8; font-weight: bold; }
-        .profile-name { font-size: 22px; font-weight: bold; color: #ffffff; margin-bottom: 15px; }
-        
-        /* সাধারণ বাটন স্টাইল */
-        .btn { display: inline-block; width: 100%; background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, opacity 0.2s; text-decoration: none; }
-        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
-        
-        /* আকর্ষণীয় ও অ্যানিমেটেড বাটন (Unlock Match) */
-        .btn-animated {
-            display: inline-block;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
             width: 100%;
-            background: linear-gradient(135deg, #ff007f 0%, #ff4500 100%);
-            color: white;
+            overflow-x: hidden;
+            background-color: #000;
+        }
+
+        /* অনবরত পরিবর্তন হওয়া ব্যাকগ্রাউন্ড স্লাইডার */
+        .bg-slider {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .bg-slide.active {
+            opacity: 0.4;
+        }
+
+        /* প্রথম পেজের কন্টেইনার লেআউট */
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* লোগোর কন্টেইনার এবং সাইজিং (আপনার রিকোয়ারমেন্ট অনুযায়ী সাইজ সেম রাখা হয়েছে) */
+        .top-logo-box {
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .top-logo-box img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* টেক্সট কন্টেন্ট বক্স (৭০% ব্যাকগ্রাউন্ড ভিজিবিলিটি) */
+        .card {
+            background: rgba(15, 15, 25, 0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 35px 25px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        /* টাইপোগ্রাফি এবং টেক্সট স্টাইল */
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .text-title {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .highlight-age {
+            color: #ff3366;
+            font-weight: bold;
+            font-size: 20px;
+            display: block;
+            margin-top: 15px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        /* বাটন ইন্টারফেস (No বামে এবং Yes ডানে) */
+        .btn-group {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
             border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* বাটন কালার সেট */
+        .btn-yes-1 { background-color: #28a745; color: white; }
+        .btn-no-1 { background-color: #dc3545; color: white; }
+        
+        .btn-yes-2 { background-color: #007bff; color: white; }
+        .btn-no-2 { background-color: #ffc107; color: #000; }
+
+        /* কাঁপানো বাটন ইফেক্ট */
+        .btn-shake {
+            background: linear-gradient(135deg, #ff3366, #ff5e62);
+            color: white;
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            animation: lightShake 2s infinite;
+        }
+
+        @keyframes lightShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+
+        /* বাফারিং স্ক্রিন */
+        #bufferingScreen, #finalBufferingScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #09090e;
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* বাফারিংয়ের সময় লোগোর সাইজ হুবহু সেম রাখার জন্য স্টাইল */
+        .buffer-logo-box {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .buffer-logo-box img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border-left-color: #00dbde;
+            animation: spin 1s linear infinite;
+            margin-top: 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* দ্বিতীয় পেজের সম্পূর্ণ সাদা ব্যাকগ্রাউন্ড লেআউট */
+        #finalPage {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            height: 100vh;
+            width: 100vw;
+            background-color: #ffffff;
+            overflow-y: auto;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px 20px 20px 20px;
+        }
+
+        /* দ্বিতীয় পেজের লোগো কন্টেইনার */
+        .final-logo-box {
+            margin-top: 5px;
+            margin-bottom: 3px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .final-logo-box img {
+            width: 100%;
+            max-width: 360px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .powered-tag {
+            font-size: 11px;
+            color: #666;
+            text-align: right;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto 15px auto;
+            padding-right: 5px;
+            font-weight: bold;
+        }
+
+        /* প্রোফাইল এলিমেন্ট */
+        .profile-container {
+            position: relative;
+            width: 125px;
+            height: 125px;
+            margin: 15px auto;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #00dbde;
+            display: block;
+        }
+
+        .active-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 18px;
+            height: 18px;
+            background-color: #23d160;
+            border: 3px solid #0f0f13;
+            border-radius: 50%;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* রিয়েল ব্লু ভেরিফাইড ব্যাজ */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
+
+        .profile-details {
+            font-size: 15px;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        /* পালসিং অ্যাকশন বাটন */
+        .btn-cpa {
+            display: block;
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            color: white;
+            text-decoration: none;
             padding: 16px;
             font-size: 18px;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0, 219, 222, 0.5);
+            animation: pulseGlow 1.5s infinite alternate;
             cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
-            animation: pulseEffect 1.5s infinite alternate, wobbleEffect 2.5s infinite ease-in-out;
-        }
-        .btn-animated:hover {
-            background: linear-gradient(135deg, #ff4500 0%, #ff007f 100%);
-            box-shadow: 0 0 25px rgba(255, 69, 0, 0.9);
+            text-align: center;
         }
 
-        /* পালস (Pulse/Glow) অ্যানিমেশন */
-        @keyframes pulseEffect {
-            0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 0, 127, 0.5); }
-            100% { transform: scale(1.03); box-shadow: 0 0 25px rgba(255, 0, 127, 0.8), 0 0 10px rgba(255, 69, 0, 0.4); }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(0, 219, 222, 0.5); }
+            100% { transform: scale(1.03); box-shadow: 0 0 25px rgba(252, 0, 255, 0.8); }
         }
-
-        /* হালকা নড়াচড়া (Wobble) অ্যানিমেশন */
-        @keyframes wobbleEffect {
-            0% { transform: rotate(0deg); }
-            15% { transform: rotate(-1deg); }
-            30% { transform: rotate(1deg); }
-            45% { transform: rotate(-1deg); }
-            60% { transform: rotate(1deg); }
-            75% { transform: rotate(0deg); }
-            100% { transform: rotate(0deg); }
-        }
-        
-        /* বাফারিং লোডার */
-        .loader-container { display: none; }
-        .spinner { width: 50px; height: 50px; border: 5px solid #1f2937; border-top: 5px solid #ec4899; border-radius: 50%; margin: 20px auto; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* স্টেপস কন্ট্রোল */
-        .step { display: none; }
-        .step.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        
-        <div id="step1" class="step active">
-            <img src="logo.webp" alt="Website Logo" class="site-logo">
-            
-            <div class="slider-container">
-                <img src="pic1.webp" alt="Dating Preview 1" class="slider-pic active-img">
-                <img src="pic2.webp" alt="Dating Preview 2" class="slider-pic">
-                <img src="pic3.webp" alt="Dating Preview 3" class="slider-pic">
-            </div>
-
-            <p><span class="highlight-red">Jacklyn</span> is a verified <span class="highlight-blue">Chat-Avenue</span> member and she provides free video call sex. Currently, Jacklyn is available for video call sex right now! Do you want to start a video call sex with her?</p>
-            <button class="btn" onclick="startLoading()">CONNECT WITH JACKLYN</button>
-        </div>
-
-        <div id="loader" class="loader-container">
-            <div class="spinner"></div>
-            <p>Connecting to secure server...</p>
-        </div>
-
-        <div id="step4" class="step">
-            <div class="profile-container">
-                <img src="jacklyn.webp" alt="Jacklyn Profile" class="profile-pic">
-                <div class="active-status"></div>
-            </div>
-            <div class="profile-name">Jacklyn</div>
-            <p>If you want to start private messaging-Phone Sex with Jacklyn, Free Match Now.</p>
-            <a href="https://paysale.g2afse.com/click?pid=125904&offer_id=10417" class="btn-animated" target="_blank">Unlock Match</a>
-        </div>
-
+    <div class="bg-slider" id="mainSlider">
+        <div class="bg-slide active" style="background-image: url('v1.webp');"></div>
+        <div class="bg-slide" style="background-image: url('v2.webp');"></div>
+        <div class="bg-slide" style="background-image: url('v3.webp');"></div>
+        <div class="bg-slide" style="background-image: url('v4.webp');"></div>
+        <div class="bg-slide" style="background-image: url('v5.webp');"></div>
     </div>
 
-    <script>
-        // ২ সেকেন্ড পর পর ইমেজ অটোমেটিক স্লাইড করার জাভাস্ক্রিপ্ট কোড
-        let currentImgIndex = 0;
-        const images = document.querySelectorAll('.slider-pic');
-        const totalImages = images.length;
+    <div class="wrapper" id="pageWrapper">
+        
+        <div class="top-logo-box">
+            <img src="logo.webp" alt="Google Search Bar">
+        </div>
 
-        function autoSlider() {
-            // বর্তমানের একটিভ ইমেজ থেকে ক্লাস রিমুভ করা
-            images[currentImgIndex].classList.remove('active-img');
+        <div class="card">
+            <div id="step1" class="step-content active">
+                <p class="text-title">
+                    Welcome to Chat-Avenue For Meetup Website. An Official Chat-Avenue Website For Meetup. Our goal is to connect you with single, married, unmarried, or divorced women near your location.
+                </p>
+                <span class="highlight-age">Is your age over 18+?</span>
+                <div class="btn-group">
+                    <button class="btn btn-yes-1" onclick="nextStep(2)">Yes</button>
+                    <button class="btn btn-no-1" onclick="nextStep(2)">No</button>
+                </div>
+            </div>
+
+            <div id="step2" class="step-content">
+                <p class="text-title">
+                    Every day, thousands of verified single women apply on this website for absolute sexual satisfaction. You will be connected with a single woman closest to your location. Do you give permission?
+                </p>
+                <div class="btn-group">
+                    <button class="btn btn-yes-2" onclick="nextStep(3)">Yes</button>
+                    <button class="btn btn-no-2" onclick="nextStep(3)">No</button>
+                </div>
+            </div>
+
+            <div id="step3" class="step-content">
+                <p class="text-title">
+                    You will be connected to a single woman near your location very soon. She might be someone you already know. Please do not leak our verified users' profiles or information. They wish to enjoy intimacy with full privacy.
+                </p>
+                <button class="btn-shake" onclick="triggerFirstBuffering()">FIND SOMEONE NEAR ME</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="bufferingScreen">
+        <div class="buffer-logo-box">
+            <img src="logo.webp" alt="Google Search Bar">
+        </div>
+        <div class="spinner"></div>
+    </div>
+
+    <div id="finalPage">
+        
+        <div class="final-logo-box">
+            <img src="sf1.png" alt="Secure Logo">
+        </div>
+        <div class="powered-tag">Powered by Chat-Avenue</div>
+
+        <div class="card" style="background: rgba(15, 15, 25, 0.98); border-color: rgba(0, 219, 222, 0.2); width: 100%; margin-top: 0;">
             
-            // ইনডেক্স পরিবর্তন করে পরের ইমেজে যাওয়া
-            currentImgIndex = (currentImgIndex + 1) % totalImages;
-            
-            // নতুন ইমেজে একটিভ ক্লাস যোগ করা
-            images[currentImgIndex].classList.add('active-img');
+            <p class="text-title" style="color: #00dbde; font-weight: bold; font-size: 16px; margin-bottom: 10px;">
+                A single woman has been found near your location! She has requested private encounters and satisfaction.
+            </p>
+
+            <div class="profile-container">
+                <img src="fgk.webp" alt="Alyssa Watson" class="profile-pic" onerror="this.onerror=null; this.src='fgk.webp';">
+                <div class="active-dot"></div>
+            </div>
+
+            <div class="profile-name">
+                Alyssa Watson 
+                <span class="verified-badge">
+                    <svg viewBox="0 0 24 24" fill="#1d9bf0" width="100%" height="100%">
+                        <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.99-3.818-3.99-.48 0-.94.1-1.348.27C14.825 2.515 13.512 1.66 12 1.66c-1.512 0-2.825.855-3.422 2.12-.408-.17-.867-.27-1.348-.27-2.108 0-3.818 1.78-3.818 3.99 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.71 3.99 3.818 3.99.48 0 .94-.1 1.348-.27.597 1.265 1.91 2.12 3.422 2.12 1.512 0 2.825-.855 3.422-2.12.408.17.867.27 1.348.27 2.108 0 3.818-1.78 3.818-3.99 0-.495-.084-.965-.238-1.4 1.273-.65 2.148-2.02 2.148-3.6zm-12.614 3.91l-3.31-3.3 1.414-1.414 1.896 1.895 5.257-5.257 1.414 1.414-6.67 6.664z"/>
+                    </svg>
+                </span>
+            </div>
+
+            <div class="profile-details">
+                Age: 37 <br>
+                Mobile: +6146827****
+            </div>
+
+            <p class="text-title" style="font-size: 15px; margin-bottom: 20px;">
+                Complete your free profile validation to start private live chatting instantly with Alyssa Watson.
+            </p>
+
+            <div class="btn-cpa" onclick="triggerFinalLinkBuffering()">
+                Complete Your Profile
+            </div>
+        </div>
+    </div>
+
+    <div id="finalBufferingScreen" style="background: #ffffff; color: #000;">
+        <div class="final-logo-box" style="margin-bottom: 0;">
+            <img src="sf1.png" alt="Secure Logo">
+        </div>
+        <div class="powered-tag" style="text-align: center; margin-bottom: 30px;">Powered by Chat-Avenue</div>
+        <div class="spinner" style="border-left-color: #fc00ff; border-top-color: rgba(0,0,0,0.1);"></div>
+    </div>
+
+    <script {timestamp="2026-06-06"}>
+        // ১. অনবরত ব্যাকগ্রাউন্ড ইমেজ পরিবর্তন লজিক (১ সেকেন্ড পর পর)
+        const slides = document.querySelectorAll('.bg-slide');
+        let currentSlideIndex = 0;
+
+        function changeBackground() {
+            if(slides.length > 0) {
+                slides[currentSlideIndex].classList.remove('active');
+                currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+                slides[currentSlideIndex].classList.add('active');
+            }
+        }
+        setInterval(changeBackground, 1000);
+
+        // ২. প্রথম পেজের বাটন ইন্টারঅ্যাকশন ফাংশন
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById('step' + stepNumber).classList.add('active');
         }
 
-        // প্রতি ২০০০ মিলিসেকেন্ড (২ সেকেন্ড) পর পর autoSlider ফাংশন রান হবে
-        setInterval(autoSlider, 2000);
+        // ৩. প্রথম ফেক বাফারিং লজিক (২ সেকেন্ড বাফারিং)
+        function triggerFirstBuffering() {
+            document.getElementById('pageWrapper').style.display = 'none';
+            document.getElementById('mainSlider').style.display = 'none';
+            document.getElementById('bufferingScreen').style.display = 'flex';
 
-
-        // লোডিং বাফারিং হ্যান্ডেল করার ফাংশন
-        function startLoading() {
-            // প্রথম স্টেপ হাইড করা
-            document.getElementById('step1').classList.remove('active');
-            // বাফারিং লোডার চালু করা
-            document.getElementById('loader').style.display = 'block';
-
-            // ঠিক ২ সেকেন্ড পর বাফারিং শেষ হয়ে ফাইনাল পেজ ওপেন হবে
-            setTimeout(function() {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('step4').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('bufferingScreen').style.display = 'none';
+                document.getElementById('finalPage').style.display = 'flex';
             }, 2000);
         }
-    </script>
 
+        // ৪. সর্বশেষ বাটন ক্লিক লজিক (১ সেকেন্ড বাফারিং + ২য় লোগো প্রদর্শন + লিংক ওপেন)
+        function triggerFinalLinkBuffering() {
+            document.getElementById('finalPage').style.display = 'none';
+            document.getElementById('finalBufferingScreen').style.display = 'flex';
+
+            setTimeout(() => {
+                window.open("https://paysale.g2afse.com/click?pid=125904&offer_id=10417&sub1=Locantox1", "_blank");
+                
+                document.getElementById('finalBufferingScreen').style.display = 'none';
+                document.getElementById('finalPage').style.display = 'flex';
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
