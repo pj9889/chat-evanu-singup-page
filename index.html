@@ -19,7 +19,6 @@
             background-color: #000;
         }
 
-        /* ব্যাকগ্রাউন্ড স্লাইডার */
         .bg-slider {
             position: fixed;
             top: 0;
@@ -38,14 +37,13 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.4s ease-in-out;
         }
 
         .bg-slide.active {
             opacity: 0.4;
         }
 
-        /* প্রথম পেজের কন্টেইনার */
         .wrapper {
             position: relative;
             z-index: 2;
@@ -161,53 +159,92 @@
             20%, 40%, 60%, 80% { transform: translateX(3px); }
         }
 
-        /* বাফারিং স্ক্রিন */
-        #bufferingScreen, #finalBufferingScreen {
+        #bufferingScreen {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #09090e;
-            z-index: 10;
+            background: #060713;
+            z-index: 20;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
+            padding: 20px;
         }
 
-        .buffer-logo-box {
-            width: 100%;
-            max-width: 480px;
+        .radar-box {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border: 2px solid rgba(0, 219, 222, 0.3);
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0 20px;
+            margin-bottom: 25px;
+            background: radial-gradient(circle, rgba(0,219,222,0.05) 0%, rgba(0,0,0,0) 70%);
         }
 
-        .buffer-logo-box img {
+        .radar-box::after {
+            content: '';
+            position: absolute;
             width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .spinner {
-            border: 4px solid rgba(255,255,255,0.1);
-            width: 50px;
-            height: 50px;
+            height: 100%;
+            border: 1px dashed rgba(252, 0, 255, 0.4);
             border-radius: 50%;
-            border-left-color: #00dbde;
-            animation: spin 1s linear infinite;
-            margin-top: 25px;
+            animation: spinRadar 3s linear infinite;
         }
 
-        @keyframes spin {
+        .radar-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #00dbde;
+            border-radius: 50%;
+            opacity: 0;
+            animation: pulseRadar 1.5s linear infinite;
+        }
+
+        @keyframes spinRadar {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* ফাইনাল পেজ লেআউট */
+        @keyframes pulseRadar {
+            0% { transform: scale(0.6); opacity: 0.8; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .live-photo-scan {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            border: 3px solid #fc00ff;
+            object-fit: cover;
+            z-index: 25;
+            box-shadow: 0 0 15px rgba(252, 0, 255, 0.6);
+        }
+
+        .scan-status {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00dbde;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .scan-details {
+            font-size: 13px;
+            color: #a1a1aa;
+            min-height: 20px;
+            text-align: center;
+            font-family: monospace;
+        }
+
         #finalPage {
             display: none;
             position: fixed;
@@ -251,7 +288,6 @@
             font-weight: bold;
         }
 
-        /* প্রোফাইল এলিমেন্ট */
         .profile-container {
             position: relative;
             width: 125px;
@@ -325,6 +361,34 @@
             0% { transform: scale(1); box-shadow: 0 0 10px rgba(0, 219, 222, 0.5); }
             100% { transform: scale(1.03); box-shadow: 0 0 25px rgba(252, 0, 255, 0.8); }
         }
+
+        #finalBufferingScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border-left-color: #00dbde;
+            animation: spin 0.8s linear infinite;
+            margin-top: 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -374,10 +438,12 @@
     </div>
 
     <div id="bufferingScreen">
-        <div class="buffer-logo-box">
-            <img src="logo.webp" alt="Chat-Avenue Logo">
+        <div class="radar-box">
+            <div class="radar-pulse"></div>
+            <img src="q1.webp" id="liveScanPic" class="live-photo-scan" alt="Scanning">
         </div>
-        <div class="spinner"></div>
+        <div class="scan-status" id="scanStatusText">ANALYZING GPS SIGNAL...</div>
+        <div class="scan-details" id="scanDetailsText">Initializing proximity matrix...</div>
     </div>
 
     <div id="finalPage">
@@ -392,7 +458,7 @@
             </p>
 
             <div class="profile-container">
-                <img src="fgk.webp" alt="Alyssa Watson" class="profile-pic" onerror="this.onerror=null; this.src='fgk.webp';">
+                <img src="fgk.webp" alt="Alyssa Watson" class="profile-pic">
                 <div class="active-dot"></div>
             </div>
 
@@ -429,25 +495,18 @@
     </div>
 
     <script>
-        // ১. ট্রাফিকের আইপি অনুযায়ী কান্ট্রি কোড অটো-ডিটেক্ট করার ফাংশন
         function getTrafficCountryCode() {
             fetch('https://ipapi.co/json/')
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.country_calling_code) {
-                        // কান্ট্রি কোডটি (যেমন: +1, +880, +91) প্রোফাইল সেকশনে সেট হবে
                         document.getElementById('userCountryCode').innerText = data.country_calling_code;
                     }
                 })
-                .catch(error => {
-                    console.log('Country code fetch failed, using default (+61)');
-                });
+                .catch(error => {});
         }
-        
-        // পেজ লোড হওয়ার সাথে সাথে ডিটেকশন রান করবে
         window.onload = getTrafficCountryCode;
 
-        // ব্যাকগ্রাউন্ড স্লাইডার
         const slides = document.querySelectorAll('.bg-slide');
         let currentSlideIndex = 0;
 
@@ -460,7 +519,6 @@
         }
         setInterval(changeBackground, 1000);
 
-        // স্টেপ চেঞ্জ লজিক
         function nextStep(stepNumber) {
             document.querySelectorAll('.step-content').forEach(step => {
                 step.classList.remove('active');
@@ -468,29 +526,56 @@
             document.getElementById('step' + stepNumber).classList.add('active');
         }
 
-        // ১ম বাফারিং (২ সেকেন্ড)
         function triggerFirstBuffering() {
             document.getElementById('pageWrapper').style.display = 'none';
             document.getElementById('mainSlider').style.display = 'none';
             document.getElementById('bufferingScreen').style.display = 'flex';
 
+            const statusText = document.getElementById('scanStatusText');
+            const detailsText = document.getElementById('scanDetailsText');
+            const scanPic = document.getElementById('liveScanPic');
+
+            let picNumber = 1;
+            const picInterval = setInterval(() => {
+                scanPic.src = 'q' + picNumber + '.webp';
+                picNumber = (picNumber % 10) + 1;
+            }, 100);
+
             setTimeout(() => {
-                document.getElementById('bufferingScreen').style.display = 'none';
-                document.getElementById('finalPage').style.display = 'flex';
-            }, 2000);
+                statusText.innerText = "SEARCHING NEARBY TRAFFIC...";
+                detailsText.innerText = "Scanning radius 5.4km... [41 profiles found]";
+            }, 800);
+
+            setTimeout(() => {
+                statusText.style.color = "#fc00ff";
+                statusText.innerText = "FILTERING VERIFIED FEMALE PROFILES...";
+                detailsText.innerText = "Matching intimacy criteria... Syncing database...";
+            }, 1800);
+
+            setTimeout(() => {
+                clearInterval(picInterval);
+                scanPic.src = 'fgk.webp';
+                statusText.style.color = "#23d160";
+                statusText.innerText = "MATCH FOUND SUCCESSFULLY!";
+                detailsText.innerText = "Connecting secure profile terminal...";
+                
+                setTimeout(() => {
+                    document.getElementById('bufferingScreen').style.display = 'none';
+                    document.getElementById('finalPage').style.display = 'flex';
+                }, 400);
+
+            }, 3000);
         }
 
-        // ২য় বাফারিং ও লিংক ওপেন (১ সেকেন্ড)
         function triggerFinalLinkBuffering() {
             document.getElementById('finalPage').style.display = 'none';
             document.getElementById('finalBufferingScreen').style.display = 'flex';
 
             setTimeout(() => {
                 window.open("https://paysale.g2afse.com/click?pid=125904&offer_id=10417&sub1=Locantox1", "_blank");
-                
                 document.getElementById('finalBufferingScreen').style.display = 'none';
                 document.getElementById('finalPage').style.display = 'flex';
-            }, 1000);
+            }, 800);
         }
     </script>
 </body>
